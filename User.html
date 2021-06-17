@@ -36,6 +36,16 @@
 
             }
             
+            .stop-listening {
+                background-color: #f2c64e;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 30%;
+            }
+            
             .login:hover {
                 opacity: 0.8;
             }
@@ -53,7 +63,6 @@
             
             img.statusImg {
                 width: 20%;
-                border-radius: 50%;
             }
             
             .container {
@@ -65,8 +74,11 @@
                 padding-top: 16px;
             }
             
+            #listening-gif {
+                height:70px;
+            }
             /* Change styles for span and cancel button on extra small screens */
-            @media screen and (max-width: 300px) {
+            @media screen and (max-width: 800px) {
                 span.psw {
                     display: block;
                     float: none;
@@ -74,12 +86,66 @@
                 .cancelbtn {
                     width: 100%;
                 }
+                body {
+                    font-size: 45px;
+                }
+                
+                img.statusImg {
+                    width: 40%;
+                }
+                #listening-gif {
+                    height:170px;
+                }
+                input[type=text], input[type=password] {
+                    width: 100%;
+                    font-size: 35px;
+                    padding: 12px 20px;
+                    margin: 8px 0;
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                    box-sizing: border-box;
+                }
+                
+                .login {
+                    background-color: #04AA6D;
+                    font-size: 35px;
+                    color: white;
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                }
+                
+                .start-listening {
+                    font-size: 35px;
+                    background-color: #2f99e0;
+                    color: white;
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    cursor: pointer;
+                    width: 50%;
+                    
+                }
+                
+                .stop-listening {
+                    font-size: 35px;
+                    background-color: #f2c64e;
+                    color: white;
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    cursor: pointer;
+                    width: 50%;
+                }
             }
+            
         </style>
     </head>
     <body>
         <div id="main-container">
-            <h2>User login</h2>
+            <h4>User login</h4>
             Welcome to <b>OriGn</b> login future
 
             <div class="border">
@@ -99,7 +165,7 @@
                     <button class="start-listening" id="captureStart"  >Start OriGn remote login</button>
                     <button class="stop-listening" id="captureStop" hidden>Stop capturing</button>
                     <br>
-                    <img src="listening.gif" id="listening-gif" style="height:70px;">
+                    <img src="listening.gif" id="listening-gif">
                 </div>
                 
             </div>
