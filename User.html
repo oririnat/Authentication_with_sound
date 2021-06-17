@@ -63,6 +63,7 @@
             
             img.statusImg {
                 width: 20%;
+                transition-duration: 2s;
             }
             
             .container {
@@ -194,6 +195,7 @@
                 if(authorize){
                     document.getElementById("status").src = "green.png";
                 } else {
+                    document.getElementById("status").style.transform = "rotate(365deg)";
                     document.getElementById("status").src = "red.png";
                 }
             }
