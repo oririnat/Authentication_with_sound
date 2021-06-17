@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en-us">
+    <head>
+        <title>User - OriGn login</title>
+        <style>
+            body {font-family: Arial, Helvetica, sans-serif;}
+            .border {border: 3px solid #f1f1f1;}
+            
+            input[type=text], input[type=password] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+            }
+            
+            .login {
+                background-color: #04AA6D;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+            }
+            
+            .start-listening {
+                background-color: #2f99e0;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 30%;
+
+            }
+            
+            .login:hover {
+                opacity: 0.8;
+            }
+            
+            .cancelbtn {
+                width: auto;
+                padding: 10px 18px;
+                background-color: #f44336;
+            }
+            
+            .imgcontainer {
+                text-align: center;
+                margin: 24px 0 12px 0;
+            }
+            
+            img.statusImg {
+                width: 20%;
+                border-radius: 50%;
+            }
+            
+            .container {
+                padding: 16px;
+            }
+            
+            span.psw {
+                float: right;
+                padding-top: 16px;
+            }
+            
+            /* Change styles for span and cancel button on extra small screens */
+            @media screen and (max-width: 300px) {
+                span.psw {
+                    display: block;
+                    float: none;
+                }
+                .cancelbtn {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main-container">
+            <h2>User login</h2>
+            Welcome to <b>OriGn</b> login future
+
+            <div class="border">
+                <div class="imgcontainer">
+                    <img id="status" src="red.png" class="statusImg">
+                </div>
+                
+                <div class="container">
+                    <label for="uname"><b>שם משתמש</b></label>
+                    <input id="usernameInput" type="text" placeholder="Enter Username" name="uname" >
+                    
+                    <label for="psw"><b>סיסמה</b></label>
+                    <input id="passwordInput" type="password" placeholder="Enter Password" name="psw" required>
+                    
+                    <button class="login" type="submit" onclick="try_login()">Login</button>
+                    
+                    <button class="start-listening" id="captureStart"  >Start OriGn remote login</button>
+                    <button class="stop-listening" id="captureStop" hidden>Stop capturing</button>
+                    <br>
+                    <img src="listening.gif" id="listening-gif" style="height:70px;">
+                </div>
+                
+            </div>
+            
+            <br><br>
+        </div>
+
+        <script type="text/javascript" src="ggwave.js"></script>
+        <script type='text/javascript'>
+            var userNamesAndPasswords = [
+                ["111", "pass1"],
+                ["222", "pass2"],
+                ["333", "pass3"]
+            ]
+            
+            function try_login() {
+                var authorize = false;
+                userNamesAndPasswords.forEach(entry => {
+                    if(entry[0] === document.getElementById("usernameInput").value &&
+                       entry[1] === document.getElementById("passwordInput").value) {
+                        authorize = true;
+                    }
+                });
+                if(authorize){
+                    document.getElementById("status").src = "green.png";
+                } else {
+                    document.getElementById("status").src = "red.png";
+                }
+            }
+            
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+
+            var context = null;
+            var recorder = null;
+
+            // the ggwave module instance
+            var ggwave = null;
+            var parameters = null;
+            var instance = null;
+
+            // instantiate the ggwave instance
+            // ggwave_factory comes from the ggwave.js module
+            ggwave_factory().then(function(obj) {
+                ggwave = obj;
+            });
+
+            var captureStart = document.getElementById("captureStart");
+            var captureStop = document.getElementById("captureStop");
+            var listeningGif = document.getElementById("listening-gif");
+            listeningGif.style.display = "none";
+
+            // helper function
+            function convertTypedArray(src, type) {
+                var buffer = new ArrayBuffer(src.byteLength);
+                var baseView = new src.constructor(buffer).set(src);
+                return new type(buffer);
+            }
+
+            // initialize audio context and ggwave
+            function init() {
+                if (!context) {
+                    context = new AudioContext({sampleRate: 48000});
+
+                    parameters = ggwave.getDefaultParameters();
+                    parameters.sampleRateInp = context.sampleRate;
+                    parameters.sampleRateOut = context.sampleRate;
+                    instance = ggwave.init(parameters);
+                }
+            }
+            //
+            // Rx
+            //
+            captureStart.addEventListener("click", function () {
+                init();
+
+                let constraints = {
+                    audio: {
+                        // not sure if these are necessary to have
+                        echoCancellation: false,
+                        autoGainControl: false,
+                        noiseSuppression: false
+                    }
+                };
+
+                navigator.mediaDevices.getUserMedia(constraints).then(function (e) {
+                    mediaStream = context.createMediaStreamSource(e);
+
+                    var bufferSize = 16*1024;
+                    var numberOfInputChannels = 1;
+                    var numberOfOutputChannels = 1;
+
+                    if (context.createScriptProcessor) {
+                        recorder = context.createScriptProcessor(
+                                bufferSize,
+                                numberOfInputChannels,
+                                numberOfOutputChannels);
+                    } else {
+                        recorder = context.createJavaScriptNode(
+                                bufferSize,
+                                numberOfInputChannels,
+                                numberOfOutputChannels);
+                    }
+
+                    recorder.onaudioprocess = function (e) {
+                        var source = e.inputBuffer;
+                        var res = ggwave.decode(instance, convertTypedArray(new Float32Array(source.getChannelData(0)), Int8Array));
+                        if (res) {
+                            rxData.value = res;
+                            document.getElementById("usernameInput").value = res.split(",")[0]
+                            document.getElementById("passwordInput").value = res.split(",")[1]
+                            try_login()
+                        }
+
+                        // obsolete javascript resampling
+                        // since ggwave v0.2.0 the resampling is built-in ggwave
+                        //var offlineCtx = new OfflineAudioContext(source.numberOfChannels, 48000*source.duration, 48000);
+                        //var offlineSource = offlineCtx.createBufferSource();
+
+                        //offlineSource.buffer = source;
+                        //offlineSource.connect(offlineCtx.destination);
+                        //offlineSource.start();
+                        //offlineCtx.startRendering();
+                        //offlineCtx.oncomplete = function(e) {
+                        //    var resampled = e.renderedBuffer.getChannelData(0);
+                        //    var res = ggwave.decode(instance, convertTypedArray(new Float32Array(resampled), Int8Array));
+                        //    if (res) {
+                        //        rxData.value = res;
+                        //    }
+                        //};
+                    }
+
+                    mediaStream.connect(recorder);
+                    recorder.connect(context.destination);
+                }).catch(function (e) {
+                    console.error(e);
+                });
+
+                listeningGif.style.display = "block";
+                captureStart.hidden = true;
+                captureStop.hidden = false;
+            });
+
+            captureStop.addEventListener("click", function () {
+                if (recorder) {
+                    listeningGif.style.display = "none";
+                    recorder.disconnect(context.destination);
+                    mediaStream.disconnect(recorder);
+                    recorder = null;
+                }
+
+                captureStart.hidden = false;
+                captureStop.hidden = true;
+            });
+
+            captureStop.click();
+        </script>
+    </body>
+</html>
