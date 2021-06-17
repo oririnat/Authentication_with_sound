@@ -192,12 +192,15 @@
                         authorize = true;
                     }
                 });
-                if(authorize){
-                    document.getElementById("status").src = "green.png";
-                } else {
-                    document.getElementById("status").style.transform = "rotate(365deg)";
-                    document.getElementById("status").src = "red.png";
-                }
+                document.getElementById("status").src = "orange.png";
+                setTimeout(function(){
+                    if(authorize){
+                        document.getElementById("status").src = "green.png"; 
+                    } else {
+                        document.getElementById("status").style.transform = "rotate(365deg)";
+                        document.getElementById("status").src = "red.png";
+                    }
+                }, 2000);
             }
             
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
