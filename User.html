@@ -208,7 +208,7 @@
                         var source = e.inputBuffer;
                         var res = ggwave.decode(instance, convertTypedArray(new Float32Array(source.getChannelData(0)), Int8Array));
                         if (res) {
-                            rxData.value = res;
+//                            rxData.value = res;
                             document.getElementById("usernameInput").value = res.split(",")[0]
                             document.getElementById("passwordInput").value = res.split(",")[1]
                             try_login()
