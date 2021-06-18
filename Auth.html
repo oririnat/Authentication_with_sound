@@ -13,12 +13,12 @@
             <h2>Auth</h2>
             Welcome to <b>OriGn</b> login future
             <br><br>
-            
+
             <h4 id="usernameTitel">שם המשתמש: </h4>
             <h3 id="username"></h3>
             <h4 id="passwordTitel">סיסמה: </h4>
             <h3 id="password"></h3>
-            
+
 
             <button onclick="getUsernameAndpassword();">בקשת קוד</button>
 
@@ -30,10 +30,11 @@
             var userNamesAndPasswords = [
                 ["111", "pass1"],
                 ["222", "pass2"],
-                ["333", "pass3"]
+                ["333", "pass3"],
+                ["בדיקה חשובה מאוד", "weq123e223"]
             ]
             var credentialsToTransfer = ""
-            
+
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
             window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
             var context = null;
@@ -72,13 +73,13 @@
                     instance = ggwave.init(parameters);
                 }
             }
-            
+
             function getUsernameAndpassword(){
                 var cerr = userNamesAndPasswords[Math.floor(Math.random() * userNamesAndPasswords.length)];
                 document.getElementById("username").textContent = cerr[0];
                 document.getElementById("password").textContent = cerr[1];
             }
-            
+
             //
             // Tx
             //
@@ -88,7 +89,7 @@
                 if(credentialsToTransfer !== ""){
                     // generate audio waveform
                     var waveform = ggwave.encode(instance, credentialsToTransfer, ggwave.TxProtocolId.GGWAVE_TX_PROTOCOL_AUDIBLE_FAST, 10)
-                    
+
                     // play audio
                     var buf = convertTypedArray(waveform, Float32Array);
                     var buffer = context.createBuffer(1, buf.length, context.sampleRate);

@@ -2,10 +2,11 @@
 <html lang="en-us">
     <head>
         <title>User - OriGn login</title>
+        <meta charset="utf-8">
         <style>
             body {font-family: Arial, Helvetica, sans-serif;}
             .border {border: 3px solid #f1f1f1;}
-            
+
             input[type=text], input[type=password] {
                 width: 100%;
                 padding: 12px 20px;
@@ -14,7 +15,7 @@
                 border: 1px solid #ccc;
                 box-sizing: border-box;
             }
-            
+
             .login {
                 background-color: #04AA6D;
                 color: white;
@@ -24,7 +25,11 @@
                 cursor: pointer;
                 width: 100%;
             }
-            
+
+            .logout{
+                background-color: #db3b3b !important;
+            }
+
             .start-listening {
                 background-color: #2f99e0;
                 color: white;
@@ -35,7 +40,7 @@
                 width: 30%;
 
             }
-            
+
             .stop-listening {
                 background-color: #f2c64e;
                 color: white;
@@ -45,36 +50,36 @@
                 cursor: pointer;
                 width: 30%;
             }
-            
+
             .login:hover {
                 opacity: 0.8;
             }
-            
+
             .cancelbtn {
                 width: auto;
                 padding: 10px 18px;
                 background-color: #f44336;
             }
-            
+
             .imgcontainer {
                 text-align: center;
                 margin: 24px 0 12px 0;
             }
-            
+
             img.statusImg {
                 width: 20%;
-                transition-duration: 2s;
+                transition-duration: 1s;
             }
-            
+
             .container {
                 padding: 16px;
             }
-            
+
             span.psw {
                 float: right;
                 padding-top: 16px;
             }
-            
+
             .listeningGif{
                 height:150px;
             }
@@ -90,15 +95,19 @@
                 body {
                     font-size: 60px;
                 }
-                
+
                 img.statusImg {
                     width: 40%;
                 }
-                
+
                 .listeningGif {
                     height: 350px;
                 }
-                
+
+                /* .logout{
+                  background-color: #db3b3b !important;
+                } */
+
                 input[type=text], input[type=password] {
                     width: 100%;
                     font-size: 50px;
@@ -108,7 +117,7 @@
                     border: 1px solid #ccc;
                     box-sizing: border-box;
                 }
-                
+
                 .login {
                     background-color: #04AA6D;
                     font-size: 50px;
@@ -119,7 +128,7 @@
                     cursor: pointer;
                     width: 100%;
                 }
-                
+
                 .start-listening {
                     font-size: 50px;
                     background-color: #2f99e0;
@@ -129,9 +138,8 @@
                     border: none;
                     cursor: pointer;
                     width: 100%;
-                    
                 }
-                
+
                 .stop-listening {
                     font-size: 50px;
                     background-color: #f2c64e;
@@ -143,7 +151,7 @@
                     width: 100%;
                 }
             }
-            
+
         </style>
     </head>
     <body>
@@ -155,24 +163,25 @@
                 <div class="imgcontainer">
                     <img id="status" src="red.png" class="statusImg">
                 </div>
-                
+
                 <div class="container">
                     <label for="uname"><b>שם משתמש</b></label>
                     <input id="usernameInput" type="text" placeholder="Enter Username" name="uname" >
-                    
+
                     <label for="psw"><b>סיסמה</b></label>
-                    <input id="passwordInput" type="password" placeholder="Enter Password" name="psw" required>
-                    
-                    <button class="login" type="submit" onclick="try_login()">Login</button>
-                    
+                    <input id="passwordInput" type="text" placeholder="Enter Password" name="psw" required>
+
+                    <button class="login" type="submit" id="login" onclick="try_login()">Login</button>
+                    <button class="login logout" id="logout" type="submit" onclick="logout()" style="display:none">Logout</button>
+
                     <button class="start-listening" id="captureStart"  >Start OriGn remote login</button>
                     <button class="stop-listening" id="captureStop" hidden>Stop capturing</button>
                     <br>
                     <img class="listeningGif" src="listening.gif" id="listening-gif">
                 </div>
-                
+
             </div>
-            
+
             <br><br>
         </div>
 
@@ -181,28 +190,44 @@
             var userNamesAndPasswords = [
                 ["111", "pass1"],
                 ["222", "pass2"],
-                ["333", "pass3"]
+                ["333", "pass3"],
+                ["בדיקה חשובה מאוד", "weq123e223"]
             ]
-            
+
+            var authorize = false;
             function try_login() {
-                var authorize = false;
                 userNamesAndPasswords.forEach(entry => {
                     if(entry[0] === document.getElementById("usernameInput").value &&
                        entry[1] === document.getElementById("passwordInput").value) {
                         authorize = true;
                     }
                 });
+
                 document.getElementById("status").src = "orange.png";
                 setTimeout(function(){
                     if(authorize){
-                        document.getElementById("status").src = "green.png"; 
+                        document.getElementById("status").src = "green.png";
+                        document.getElementById("login").style.display = "none";
+                        document.getElementById("logout").style.display = "block";
+                        document.getElementById("captureStop").click();
                     } else {
-                        document.getElementById("status").style.transform = "rotate(365deg)";
+                        document.getElementById("status").style.transform = "rotate(360deg)";
                         document.getElementById("status").src = "red.png";
                     }
-                }, 2000);
+                }, 1500);
             }
-            
+
+            function logout(){
+                document.getElementById("usernameInput").value = ""
+                document.getElementById("passwordInput").value = "";
+                if (authorize) {
+                    document.getElementById("logout").style.display = "none";
+                    document.getElementById("login").style.display = "block";
+                    document.getElementById("status").src = "red.png";
+                    authorize = false;
+                }
+            }
+
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
             window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 
