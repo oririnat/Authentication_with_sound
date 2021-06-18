@@ -48,7 +48,6 @@
                 border: none;
                 cursor: pointer;
                 width: 30%;
-                opacity: 0.5 !important;
             }
 
             .login:hover {
@@ -149,7 +148,6 @@
                     border: none;
                     cursor: pointer;
                     width: 100%;
-                    opacity: 0.5 !important;
                 }
             }
 
@@ -173,7 +171,7 @@
                     <input id="passwordInput" type="text" placeholder="Enter Password" name="psw" required>
 
                     <button class="login" type="submit" id="login" onclick="try_login()">Login</button>
-                    <button class="login logout" id="logout" type="submit" onclick="logout()" style="display:none">Logout</button>
+                    <button class="login logout" id="logout" type="submit" onclick="logout()" style="display:none; opacity: 0.6 !important;">Logout</button>
 
                     <button class="start-listening" id="captureStart"  >Start OriGn remote login</button>
                     <button class="stop-listening" id="captureStop" hidden>Stop capturing</button>
