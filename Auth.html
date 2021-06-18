@@ -2,9 +2,29 @@
 <html lang="en-us">
     <head>
         <title>Auth - OriGn login</title>
+        <meta charset="utf-8">
         <style>
             * {
                 font-family:arial
+            }
+            .login {
+                background-color: #04AA6D;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 30%;
+            }
+
+            .send {
+                background-color: #2f99e0;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 30%;
             }
         </style>
     </head>
@@ -20,9 +40,48 @@
             <h3 id="password"></h3>
 
 
-            <button onclick="getUsernameAndpassword();">בקשת קוד</button>
+            <button class="login" onclick="getUsernameAndpassword();">בקשת קוד</button>
 
-            <button onclick="onSend();">OriGn remote login</button>
+            <button class="send" onclick="onSend();">OriGn remote login</button>
+
+            <img id="robot" src="robot.gif" style="height: 200px; display: none">
+
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+            <div dir="rtl">
+              <button style="opacity: 0.1" onclick="showKnew();">ידעתי שתגידו את זה</button>
+              <p id="knewData" dir="rtl" style="display: none">
+                ידעתי שתגידו את זה ! <br>
+                כדאי להימנע ממצב שעוד משיהוא מאזין במקביל לסאונד, נוסיף תוו ביקורת
+              </p>
+            </div>
         </div>
 
         <script type="text/javascript" src="ggwave.js"></script>
@@ -80,13 +139,24 @@
                 document.getElementById("password").textContent = cerr[1];
             }
 
+            function showKnew(){
+              if(document.getElementById("knewData").style.display === "block"){
+                  document.getElementById("knewData").style.display = "none";
+              } else {
+                document.getElementById("knewData").style.display = "block";
+              }
+            }
             //
             // Tx
             //
             function onSend() {
                 init();
-
                 if(credentialsToTransfer !== ""){
+                  document.getElementById("robot").style.display = "block";
+                  setTimeout(function(){
+                        document.getElementById("robot").style.display = "none";
+                  }, 3000);
+
                     // generate audio waveform
                     var waveform = ggwave.encode(instance, credentialsToTransfer, ggwave.TxProtocolId.GGWAVE_TX_PROTOCOL_AUDIBLE_FAST, 10)
 
