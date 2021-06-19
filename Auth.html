@@ -155,6 +155,7 @@
                 document.getElementById("knewData").style.display = "block";
               }
             }
+
             //
             // Tx
             //
@@ -164,10 +165,12 @@
                   document.getElementById("robot").style.display = "block";
                   setTimeout(function(){
                         document.getElementById("robot").style.display = "none";
-                  }, 3000);
+                  }, 3500);
 
                     // generate audio waveform
-                    var waveform = ggwave.encode(instance, credentialsToTransfer, ggwave.TxProtocolId.GGWAVE_TX_PROTOCOL_AUDIBLE_FAST, 10)
+                    // GGWAVE_TX_PROTOCOL_AUDIBLE_FAST
+                    // GGWAVE_TX_PROTOCOL_AUDIBLE_NORMAL
+                    var waveform = ggwave.encode(instance, credentialsToTransfer, ggwave.TxProtocolId.GGWAVE_TX_PROTOCOL_AUDIBLE_FAST, 30);
 
                     // play audio
                     var buf = convertTypedArray(waveform, Float32Array);
@@ -179,7 +182,6 @@
                     source.start(0);
                 }
             }
-
         </script>
     </body>
 </html>
