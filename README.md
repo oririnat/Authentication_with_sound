@@ -7,7 +7,8 @@ The user can manually copy the login credentials
 or use OriGn and use sound to transfer the credentials.
 
 
-![Auth site screenshot](https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/Auth.png){ width: 200px; }
+### Auth site screenshot
+<img src="https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/Auth.png" alt="Auth site screenshot" width="200"/>
 
-![User site screenshot](https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/User.png){ width: 200px; }
-
+### User site screenshot
+<img src="https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/User.png" alt="User site screenshot" width="200"/>
