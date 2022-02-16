@@ -8,7 +8,7 @@ or use OriGn and use sound to transfer the credentials.
 
 
 ### Auth site screenshot
-<img src="https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/Auth.png" alt="Auth site screenshot" width="200"/>
+<img src="https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/Auth.png" alt="Auth site screenshot" width="300"/>
 
 ### User site screenshot
-<img src="https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/User.png" alt="User site screenshot" width="200"/>
+<img src="https://raw.githubusercontent.com/oririnat/Authentication_with_sound/main/User.png" alt="User site screenshot" width="300"/>
